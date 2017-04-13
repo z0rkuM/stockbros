@@ -1,0 +1,2 @@
+mongoimport --db StockBros --collection users --drop --file C:\Users\Juan\Desktop\users.json
+mongoimport --db StockBros --collection events --drop --file C:\Users\Juan\Desktop\events.json

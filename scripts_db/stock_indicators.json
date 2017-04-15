@@ -1,0 +1,12 @@
+{
+'_id':1, 'market':'IBEX', 'stock':'SAN', 'date_update':'2017-04-15T09:47:30', 'chart_time_period':'daily',
+	'indicators': {
+		'beta':1.68,
+		'rsi':43.26,
+		'atr':0.1162,
+		'ratio_gr':2,
+		'bar_alternation':2,
+		'macd': 0.0472,
+		'stochastic': 3.9028
+	}
+}

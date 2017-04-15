@@ -1,2 +1,3 @@
-mongoimport --db StockBros --collection users --drop --file C:\Users\Juan\Desktop\users.json
-mongoimport --db StockBros --collection events --drop --file C:\Users\Juan\Desktop\events.json
+mongoimport --db StockBros --collection users --drop --file D:\git\stockbros\scripts_db\users.json
+mongoimport --db StockBros --collection events --drop --file D:\git\stockbros\scripts_db\events.json
+mongoimport --db StockBros --collection stock_indicators --drop --file D:\git\stockbros\scripts_db\stock_indicators.json

@@ -1,6 +1,7 @@
 #!flask/bin/python
 from flask import Flask, abort, jsonify, make_response, url_for, request
 from StockIndicators.StockIndicators import *
+from Authentication.Authentication import *
 from flask_httpauth import HTTPBasicAuth
 from datetime import datetime
 import pymongo
@@ -12,18 +13,6 @@ from util import *
 app = Flask(__name__)
 #app.config["DEBUG"] = True
 app.register_blueprint(api_si, url_prefix="/StockBros")
-auth = HTTPBasicAuth()
-
-#####################
-#HTTP Authentication#
-#####################
-@auth.get_password
-def get_pw(username):
-	documentUsers = db.users
-	authUser = documentUsers.find_one({"Username": username})
-	if(authUser!=None):
-		return authUser.get("pw")
-	return None
 
 #########################
 #Error control functions#
@@ -31,10 +20,6 @@ def get_pw(username):
 @app.errorhandler(404)
 def not_found(error):
 	return make_response(jsonify({'error': 'Not found'}), 404)
-
-@auth.error_handler
-def unauthorized():
-	return make_response(jsonify({'error': 'Unauthorized access'}), 401)
 	
 ################
 #      GET     #
@@ -66,6 +51,8 @@ def get_event(event_id):
 #     POST     #
 ################
 @app.route('/StockBros/events', methods=['POST'])
+@auth.login_required
+#TODO COMPROBAR SE FUNCIONA CON LOGIN REQUIRED O POST
 def create_event():
 	if not request.json or not 'title' in request.json:
 		abort(400)

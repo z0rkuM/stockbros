@@ -1,5 +1,6 @@
 #!flask/bin/python
 from flask import Flask, abort, jsonify, make_response, url_for, request
+from StockIndicators.StockIndicators import *
 from flask_httpauth import HTTPBasicAuth
 from datetime import datetime
 import pymongo
@@ -9,6 +10,8 @@ from util import *
 
 #Create application object
 app = Flask(__name__)
+#app.config["DEBUG"] = True
+app.register_blueprint(api_si, url_prefix="/StockBros")
 auth = HTTPBasicAuth()
 
 #####################
@@ -86,5 +89,4 @@ def create_event():
 	return jsonify({'event':[make_public_event(event)]}), 201
 	
 if __name__ == '__main__':
-# for debug --> app.run(debug=True)
 	app.run()

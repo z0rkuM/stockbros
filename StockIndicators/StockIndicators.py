@@ -3,6 +3,7 @@ from flask import Blueprint, jsonify
 
 api_si = Blueprint('api_si', __name__)
 
+#TODO: probar a meter token de seguridad a ver se funciona
 @api_si.route("/stock_indicators")
 def get_stock_indicators():
     return jsonify(stock_indicators=[

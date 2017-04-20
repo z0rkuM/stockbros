@@ -1,5 +1,5 @@
 {
-'_id':1, 'market':'IBEX', 'stock':'SAN', 'date_update':'2017-04-15T09:47:30', 'chart_time_period':'daily',
+'_id':1, 'market':'IBEX', 'stock':'SAN', 'date_update':'2017-04-15T09:47:30', 'chart_time_period':'daily', 'price':5.638,
 	'indicators': {
 		'beta':1.68,
 		'rsi':43.26,

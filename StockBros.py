@@ -12,7 +12,7 @@ from util import *
 #Create application object
 app = Flask(__name__)
 #app.config["DEBUG"] = True
-app.register_blueprint(api_si, url_prefix="/StockBros")
+app.register_blueprint(api_stocks, url_prefix="/StockBros")
 
 #########################
 #Error control functions#

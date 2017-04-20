@@ -52,7 +52,6 @@ def get_event(event_id):
 ################
 @app.route('/StockBros/events', methods=['POST'])
 @auth.login_required
-#TODO COMPROBAR SE FUNCIONA CON LOGIN REQUIRED O POST
 def create_event():
 	if not request.json or not 'title' in request.json:
 		abort(400)

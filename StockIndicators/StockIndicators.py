@@ -3,26 +3,25 @@ from flask import Blueprint, jsonify, abort
 from Authentication.Authentication import *
 from util import *
 
-api_si = Blueprint('api_si', __name__)
+api_stocks = Blueprint('api_stocks', __name__)
 
-@api_si.route("/stock_indicators", methods=['GET'])
+@api_stocks.route("/stocks", methods=['GET'])
 @auth.login_required
-def get_stock_indicators():
-	documentSI = db.stock_indicators
-	sis = []
-	for stockIndicator in documentSI.find({}):
-		sis.append(stockIndicator)
+def get_stocks():
+	documentStocks = db.stocks
+	stocks = []
+	for stock in documentStocks.find({}):
+		stocks.append(stock)
+	return jsonify({'stocks': [make_public_stock(s) for s in stocks]})
 	
-	return jsonify({'stock_indicators': [make_public_stock_indicator(si) for si in sis]})
-	
-@api_si.route('/stock_indicators/<stock_id>', methods=['GET'])
+@api_stocks.route('/stocks/<stock_id>', methods=['GET'])
 @auth.login_required
-def get_event(stock_id):
-	documentSI = db.stock_indicators
+def get_stock(stock_id):
+	documentStocks = db.stocks
 
-	si = documentSI.find_one({'stock':stock_id})
+	stock = documentStocks.find_one({'stock':stock_id})
 	
-	if not si:
+	if not stock:
 		abort(404)
 
-	return jsonify({'stock_indicators':[make_public_stock_indicator(si)]})
+	return jsonify({'stocks':[make_public_stock(stock)]})

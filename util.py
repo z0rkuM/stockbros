@@ -11,12 +11,12 @@ def make_public_event(event):
 			recent_event[field] = event[field]
 	return recent_event
 	
-def make_public_stock_indicator(si):
-	recent_si = {}
-	for field in si:
+def make_public_stock(stock):
+	recent_stock = {}
+	for field in stock:
 		if field == 'stock':
-			recent_si[field] = si[field]
-			recent_si['uri'] = url_for('api_si.get_stock_indicators', stock_id=si['stock'], _external=True)
+			recent_stock[field] = stock[field]
+			recent_stock['uri'] = url_for('.get_stock', stock_id=stock['stock'], _external=True)
 		else:
-			recent_si[field] = si[field]
-	return recent_si
+			recent_stock[field] = stock[field]
+	return recent_stock

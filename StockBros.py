@@ -1,6 +1,6 @@
 #!flask/bin/python
 from flask import Flask, abort, jsonify, make_response, url_for, request
-from StockIndicators.StockIndicators import *
+from Stocks.Stocks import *
 from Authentication.Authentication import *
 from flask_httpauth import HTTPBasicAuth
 from datetime import datetime

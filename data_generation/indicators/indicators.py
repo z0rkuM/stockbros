@@ -77,7 +77,7 @@ for symbol in symbols:
 
     html_result = html_result + '<tr><td>{:s}</td><td>{:10.3f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td></tr>'.format(our_symbols.get(symbol), stock['Close'].values[-1], rsi_data[-1], ratio_gr_20, ratio_gr_70, ratio_gr_200, alternation_20, alternation_70, alternation_200)
 
-html_result = html_result + '</tbody></table></div><div class="panel text-center"><small>Stockbros &copy;</small></div></div></body></html>'
+html_result = html_result + '</tbody></table></div><div class="panel text-center"><small>StockBros &copy;</small></div></div></body></html>'
     
 with open('indicators.json', 'w', encoding='utf8') as json_file:
     json.dump(json_result, json_file, indent=2)

@@ -79,7 +79,7 @@ for symbol in symbols:
             }
         })
 
-    html_result = html_result + ('<tr><td>{:s}</td><td>{:10.2f}</td><td style="color:' + ('green' if percent >= 0 else 'red') + '">{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td></tr>').format(our_symbols.get(symbol), stock['Close'].values[-1], percent, rsi_data[-1], ratio_gr_20, ratio_gr_70, ratio_gr_200, alternation_data[0], alternation_data[1], alternation_data[2], stdvp, stdv)
+    html_result = html_result + ('<tr><td><b>{:s}</b></td><td>{:10.2f}</td><td style="color:' + ('green' if percent >= 0 else 'red') + '">{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td></tr>').format(our_symbols.get(symbol), stock['Close'].values[-1], percent, rsi_data[-1], ratio_gr_20, ratio_gr_70, ratio_gr_200, alternation_data[0], alternation_data[1], alternation_data[2], stdvp, stdv)
 
 html_result = html_result + '</tbody></table></div><div class="panel text-center"><small>StockBros &copy;</small></div></div></body></html>'
     

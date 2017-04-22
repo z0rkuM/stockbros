@@ -58,9 +58,9 @@ for symbol in symbols:
     alternation_70 = alternation(dffis_70)
     alternation_200 = alternation(dffis_200)
     rsi_data = rsi(stock['Close'], 14)
-    ratio_gr_20 = len(dffis_20[dffis_20 >= 0]) / len(dffis_20[dffis_20 < 0])
-    ratio_gr_70 = len(dffis_70[dffis_70 >= 0]) / len(dffis_70[dffis_70 < 0])
-    ratio_gr_200 = len(dffis_200[dffis_200 >= 0]) / len(dffis_200[dffis_200 < 0])
+    ratio_gr_20 = abs(dffis_20[dffis_20 >= 0].sum() / dffis_20[dffis_20 < 0].sum())
+    ratio_gr_70 = abs(dffis_70[dffis_70 >= 0].sum() / dffis_70[dffis_70 < 0].sum())
+    ratio_gr_200 = abs(dffis_200[dffis_200 >= 0].sum() / dffis_200[dffis_200 < 0].sum())
 
     json_result.append({
         'market' : 'IBEX',
@@ -77,7 +77,7 @@ for symbol in symbols:
 
     html_result = html_result + '<tr><td>{:s}</td><td>{:10.3f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td></tr>'.format(our_symbols.get(symbol), stock['Close'].values[-1], rsi_data[-1], ratio_gr_20, ratio_gr_70, ratio_gr_200, alternation_20, alternation_70, alternation_200)
 
-html_result = html_result + '</tbody></table></div></div></body></html>'
+html_result = html_result + '</tbody></table></div><div class="panel text-center"><small>Stockbros &copy;</small></div></div></body></html>'
     
 with open('indicators.json', 'w', encoding='utf8') as json_file:
     json.dump(json_result, json_file, indent=2)

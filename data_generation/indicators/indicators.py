@@ -27,6 +27,7 @@ def alternation(diffs):
         if i > 0 and ((diffs[i] > 0 and diffs[i-1] <= 0) or (diffs[i] < 0 and diffs[i-1] >= 0)):
             count = count + 1
     return (count * 100)/(len(diffs) - 1)
+
             
 
 start = datetime.datetime(2014, 1, 1)
@@ -35,10 +36,14 @@ end = datetime.datetime(2017, 12, 30)
 symbols = ['^IBEX', 'SAN.MC', 'SAB.MC', 'POP.MC', 'GAM.MC', 'ACX.MC', 'TEF.MC', 'AMS.MC', 'ABE.MC', 'MAP.MC', 'FER.MC', 'BKT.MC', 'ITX.MC', 'GRF.MC', 'TRE.MC', 'CABK.MC', 'AENA.MC', 'MRL.MC', 'DIA.MC', 'REE.MC', 'ELE.MC', 'ANA.MC', 'BBVA.MC', 'VIS.MC', 'ACS.MC', 'CLNX.MC', 'ENG.MC', 'IBE.MC', 'FCC.MC', 'MTS.MC']
 our_symbols = {'^IBEX':'IBEX35', 'SAN.MC':'SAN', 'SAB.MC':'SAB', 'POP.MC':'POP', 'GAM.MC':'GAM', 'ACX.MC':'ACX', 'TEF.MC':'TEF', 'AMS.MC':'AMS', 'ABE.MC':'ABE', 'MAP.MC':'MAP', 'FER.MC':'FER', 'BKT.MC':'BKT', 'ITX.MC':'ITX', 'GRF.MC':'GRF', 'TRE.MC':'TRE', 'CABK.MC':'CABK', 'AENA.MC':'AENA', 'MRL.MC':'MRL', 'DIA.MC':'DIA', 'REE.MC':'REE', 'ELE.MC':'ELE', 'ANA.MC':'ANA', 'BBVA.MC':'BBVA', 'VIS.MC':'VIS', 'ACS.MC':'ACS', 'CLNX.MC':'CLNX', 'ENG.MC':'ENG', 'IBE.MC':'IBE', 'FCC.MC':'FCC', 'MTS.MC':'MTS'}
 
+def get_key(key):
+    return our_symbols.get(key)
+symbols = sorted(symbols, key=get_key)
+
 stock = data.DataReader(symbols[0], 'yahoo', start, end)
 
 json_result = []
-html_result = '<html><head><title>IBEX 35 Indicators</title><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"><link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css"><link rel="stylesheet" type="text/css" href="styles.css"></head><body><div class="container"><h2>Indicators ' + stock.index[-1].strftime("%a, %d %b %Y") + '</h2><div class="table-responsive"><table class="table table-striped table-bordered table-hover table-condensed"><thead><tr><tr><th>Symbol</th><th>Close</th><th>RSI</th><th colspan="3">Ratio GR</th><th colspan="3">Alternation %</th></tr></tr></thead><tbody>'
+html_result = '<html><head><title>IBEX 35 Indicators</title><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"><link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css"><link rel="stylesheet" type="text/css" href="styles.css"></head><body><div class="container"><div class="page-header"><h1>Indicators <small>' + stock.index[-1].strftime("%a, %d %b %Y") + '</small></h1></div><div class="table-responsive"><table class="table table-striped table-bordered table-hover table-condensed"><thead><tr><tr><th>Symbol</th><th>Close</th><th>RSI</th><th colspan="3">Ratio GR</th><th colspan="3">Alternation %</th></tr></tr></thead><tbody>'
 
 for symbol in symbols:
     stock = data.DataReader(symbol, 'yahoo', start, end)

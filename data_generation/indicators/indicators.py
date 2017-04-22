@@ -43,7 +43,7 @@ symbols = sorted(symbols, key=get_key)
 stock = data.DataReader(symbols[0], 'yahoo', start, end)
 
 json_result = []
-html_result = '<html><head><title>IBEX 35 Indicators</title><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"><link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css"><link rel="stylesheet" type="text/css" href="styles.css"></head><body><div class="container"><div class="page-header"><h1>Indicators <small>' + stock.index[-1].strftime("%a, %d %b %Y") + '</small></h1></div><div class="table-responsive"><table class="table table-striped table-bordered table-hover table-condensed"><thead><tr><tr><th>Symbol</th><th>Close</th><th>Change %</th><th>RSI</th><th colspan="3">Ratio GR</th><th colspan="3">Alternation %</th><th>Vol. %</th><th>Vol. &euro;</th></tr></thead><tbody>'
+html_result = '<html><head><title>IBEX 35 Indicators</title><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"><link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css"><link rel="stylesheet" type="text/css" href="styles.css"></head><body><div class="container"><div class="page-header"><h1>Indicators <small>' + stock.index[-1].strftime("%a, %d %b %Y") + '</small></h1></div><div class="table-responsive"><table class="table table-striped table-bordered table-hover table-condensed"><thead><tr><tr><th>Symbol</th><th>Close</th><th>%</th><th>RSI</th><th colspan="3">Ratio GR</th><th colspan="3">Alternation %</th><th>Vol. %</th><th>Vol. &euro;</th></tr></thead><tbody>'
 
 for symbol in symbols:
     stock = data.DataReader(symbol, 'yahoo', start, end)

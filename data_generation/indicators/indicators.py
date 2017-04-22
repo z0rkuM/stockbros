@@ -4,6 +4,7 @@ import datetime
 from pandas_datareader import data
 import matplotlib.pyplot as plt
 import json
+import time
 
 def rsi(close, window_length):
     delta = close.diff()[1:]
@@ -34,8 +35,10 @@ end = datetime.datetime(2017, 12, 30)
 symbols = ['^IBEX', 'SAN.MC', 'SAB.MC', 'POP.MC', 'GAM.MC', 'ACX.MC', 'TEF.MC', 'AMS.MC', 'ABE.MC', 'MAP.MC', 'FER.MC', 'BKT.MC', 'ITX.MC', 'GRF.MC', 'TRE.MC', 'CABK.MC', 'AENA.MC', 'MRL.MC', 'DIA.MC', 'REE.MC', 'ELE.MC', 'ANA.MC', 'BBVA.MC', 'VIS.MC', 'ACS.MC', 'CLNX.MC', 'ENG.MC', 'IBE.MC', 'FCC.MC', 'MTS.MC']
 our_symbols = {'^IBEX':'IBEX35', 'SAN.MC':'SAN', 'SAB.MC':'SAB', 'POP.MC':'POP', 'GAM.MC':'GAM', 'ACX.MC':'ACX', 'TEF.MC':'TEF', 'AMS.MC':'AMS', 'ABE.MC':'ABE', 'MAP.MC':'MAP', 'FER.MC':'FER', 'BKT.MC':'BKT', 'ITX.MC':'ITX', 'GRF.MC':'GRF', 'TRE.MC':'TRE', 'CABK.MC':'CABK', 'AENA.MC':'AENA', 'MRL.MC':'MRL', 'DIA.MC':'DIA', 'REE.MC':'REE', 'ELE.MC':'ELE', 'ANA.MC':'ANA', 'BBVA.MC':'BBVA', 'VIS.MC':'VIS', 'ACS.MC':'ACS', 'CLNX.MC':'CLNX', 'ENG.MC':'ENG', 'IBE.MC':'IBE', 'FCC.MC':'FCC', 'MTS.MC':'MTS'}
 
+stock = data.DataReader(symbols[0], 'yahoo', start, end)
+
 json_result = []
-html_result = '<html><head><title>IBEX 35 Indicators</title><style>td, th {padding:3px 10px; text-align:left} body {font-family:arial}</style></head><body><table><thead><tr><tr><th>Symbol</th><th>Close</th><th>RSI</th><th>Ratio GR 20-70-200</th><th>Alternation 20-70-200</th></tr></tr></thead><tbody>'
+html_result = '<html><head><title>IBEX 35 Indicators</title><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"><link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css"><link rel="stylesheet" type="text/css" href="styles.css"></head><body><div class="container"><h2>Indicators ' + stock.index[-1].strftime("%a, %d %b %Y") + '</h2><div class="table-responsive"><table class="table table-striped table-bordered table-hover table-condensed"><thead><tr><tr><th>Symbol</th><th>Close</th><th>RSI</th><th colspan="3">Ratio GR</th><th colspan="3">Alternation %</th></tr></tr></thead><tbody>'
 
 for symbol in symbols:
     stock = data.DataReader(symbol, 'yahoo', start, end)
@@ -67,9 +70,9 @@ for symbol in symbols:
             }
         })
 
-    html_result = html_result + '<tr><td>{:s}</td><td>{:10.3f}</td><td>{:10.2f}</td><td>{:10.2f} - {:10.2f} - {:10.2f}</td><td>{:10.2f} - {:10.2f} - {:10.2f}</td></tr>'.format(our_symbols.get(symbol), stock['Close'].values[-1], rsi_data[-1], ratio_gr_20, ratio_gr_70, ratio_gr_200, alternation_20, alternation_70, alternation_200)
+    html_result = html_result + '<tr><td>{:s}</td><td>{:10.3f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td></tr>'.format(our_symbols.get(symbol), stock['Close'].values[-1], rsi_data[-1], ratio_gr_20, ratio_gr_70, ratio_gr_200, alternation_20, alternation_70, alternation_200)
 
-html_result = html_result + '</tbody></table></body></html>'
+html_result = html_result + '</tbody></table></div></div></body></html>'
     
 with open('indicators.json', 'w', encoding='utf8') as json_file:
     json.dump(json_result, json_file, indent=2)

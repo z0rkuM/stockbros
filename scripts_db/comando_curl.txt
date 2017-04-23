@@ -1,1 +1,1 @@
-curl -H "Content-Type: application/json" --user user:password --data @prueba_curl.json http://localhost:5000/StockBros/events
+curl -X PUT -H "Content-Type: application/json" --user user:password --data @stocks2.json http://localhost:5000/StockBros/stocks

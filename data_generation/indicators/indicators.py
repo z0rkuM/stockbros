@@ -28,7 +28,7 @@ def alternation(diffs):
             count = count + 1
     return (count * 100)/(len(diffs) - 1)
 
-def add_atr_to_dataframe (dataframe):
+def atr(dataframe):
     shifted = dataframe['Close'].shift()
     dataframe['ATR1'] = abs(dataframe['High'] - dataframe['Low'])
     dataframe['ATR2'] = abs(dataframe['High'] - shifted)
@@ -59,7 +59,7 @@ html_result = '<html><head><title>IBEX 35 Indicators</title><meta name="viewport
 for symbol in symbols:
     stock = data.DataReader(symbol, 'yahoo', start, end)
 
-    add_atr_to_dataframe(stock)
+    atr(stock)
 
     diffs = np.diff(stock['Close'].values)
     diffs = np.insert(diffs, 0,  0)

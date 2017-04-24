@@ -28,7 +28,18 @@ def alternation(diffs):
             count = count + 1
     return (count * 100)/(len(diffs) - 1)
 
-            
+def add_atr_to_dataframe (dataframe):
+    shifted = dataframe['Close'].shift()
+    dataframe['ATR1'] = abs(dataframe['High'] - dataframe['Low'])
+    dataframe['ATR2'] = abs(dataframe['High'] - shifted)
+    dataframe['ATR3'] = abs(dataframe['Low'] - shifted)
+    dataframe['TrueRange'] = dataframe[['ATR1', 'ATR2', 'ATR3']].max(axis=1)
+    dataframe['ATR'] = dataframe['TrueRange']
+    dataframe['ATR'].values[0] = np.mean(dataframe['ATR'].values[0:14])
+    for i in range(len(dataframe['ATR'].values)):
+        if i > 0:
+            dataframe['ATR'].values[i] = (dataframe['ATR'].values[i-1] * 13 + dataframe['ATR'].values[i]) / 14
+    return dataframe            
 
 start = datetime.datetime(2012, 1, 1)
 end = datetime.datetime(2017, 12, 30)
@@ -43,10 +54,12 @@ symbols = sorted(symbols, key=get_key)
 stock = data.DataReader(symbols[0], 'yahoo', start, end)
 
 json_result = []
-html_result = '<html><head><title>IBEX 35 Indicators</title><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"><link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css"><link rel="stylesheet" type="text/css" href="styles.css"></head><body><div class="container"><div class="page-header"><h1>Indicators <small>' + stock.index[-1].strftime("%a, %d %b %Y") + '</small></h1></div><div class="table-responsive"><table class="table table-striped table-bordered table-hover table-condensed"><thead><tr><tr><th>Symbol</th><th>Close</th><th>%</th><th>RSI</th><th colspan="3">Ratio GR</th><th>Alter. %</th><th>Vol. %</th><th>Vol. &euro;</th></tr></thead><tbody>'
+html_result = '<html><head><title>IBEX 35 Indicators</title><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"><link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css"><link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jqc-1.12.4/dt-1.10.15/datatables.min.css"/><script type="text/javascript" src="https://cdn.datatables.net/v/dt/jqc-1.12.4/dt-1.10.15/datatables.min.js"></script><script type="text/javascript">$(document).ready(function() {$("#datos").DataTable();} );</script></head><body><div class="container"><div class="page-header"><h1>Indicators <small>' + stock.index[-1].strftime("%a, %d %b %Y") + '</small></h1></div><div class="table-responsive"><table id="datos" class="table table-striped table-bordered table-hover table-condensed"><thead><tr><tr><th>Symbol</th><th>Close</th><th>%</th><th>RSI</th><th>GR20</th><th>GR70</th><th>GR200</th><th>Alter. %</th><th>ATR</th><th>Vol. %</th><th>Vol. &euro;</th></tr></thead><tbody>'
 
 for symbol in symbols:
     stock = data.DataReader(symbol, 'yahoo', start, end)
+
+    add_atr_to_dataframe(stock)
 
     diffs = np.diff(stock['Close'].values)
     diffs = np.insert(diffs, 0,  0)
@@ -75,11 +88,12 @@ for symbol in symbols:
             'ratio_gr' : [ratio_gr_20, ratio_gr_70, ratio_gr_200],
             'bar_alternation' : alternation_data,
             'stddev' : stdv,
-            'stddevp' : stdvp
+            'stddevp' : stdvp,
+            'atr' : stock['ATR'].values[-1]
             }
         })
 
-    html_result = html_result + ('<tr><td><b>{:s}</b></td><td>{:10.2f}</td><td style="color:' + ('green' if percent >= 0 else 'red') + '">{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td></tr>').format(our_symbols.get(symbol), stock['Close'].values[-1], percent, rsi_data[-1], ratio_gr_20, ratio_gr_70, ratio_gr_200, alternation_data[0], stdvp, stdv)
+    html_result = html_result + ('<tr><td><b>{:s}</b></td><td>{:10.2f}</td><td style="color:' + ('green' if percent >= 0 else 'red') + '">{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td><td>{:10.2f}</td></tr>').format(our_symbols.get(symbol), stock['Close'].values[-1], percent, rsi_data[-1], ratio_gr_20, ratio_gr_70, ratio_gr_200, alternation_data[0], stock['ATR'].values[-1], stdvp, stdv)
 
 html_result = html_result + '</tbody></table></div><div class="panel text-center"><small>StockBros &copy; Ju &amp; Pin</small></div></div></body></html>'
     

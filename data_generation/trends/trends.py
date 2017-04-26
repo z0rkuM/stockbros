@@ -16,6 +16,9 @@ def rsi(close, window_length):
 
     return RSI1
 
+def momentum(close, window_length):
+    return close.diff(window_length)
+
 umbral = 0.0025
 start = datetime.datetime(2012, 1, 1)
 end = datetime.datetime(2017, 12, 30)
@@ -86,12 +89,18 @@ stock['Volume'].rolling(window=7,center=False).mean().plot(color='green', linewi
 stock['Volume'].rolling(window=20,center=False).mean().plot(color='red', linewidth=.5)
 
 plt.subplot(313)
-stock['rsi30limit'] = 30 * np.ones(len(stock['trends']))
-stock['rsi70limit'] = 70 * np.ones(len(stock['trends']))
-rsi(stock['trends'], 14).plot(color='green', linewidth=.5)
-rsi(stock['trends'], 3).rolling(window=12,center=False).mean().plot(color='red', linewidth=.5)
-stock['rsi30limit'].plot(color='black', linewidth=.25)
-stock['rsi70limit'].plot(color='black', linewidth=.25)
+stock['rsiToplimit'] = 100 * np.ones(len(stock['trends']))
+stock['rsiBotlimit'] = 0 * np.ones(len(stock['trends']))
+#rsi(stock['trends'], 14).plot(color='green', linewidth=.5)
+#rsi(stock['trends'], 3).rolling(window=12,center=False).mean().plot(color='red', linewidth=.5)
+
+ci = (rsi(stock['trends'], 3).rolling(window=3,center=False).mean() + momentum(rsi(stock['trends'], 14), 9))
+ci.plot(color='red', linewidth=.5)
+ci.rolling(window=13,center=False).mean().plot(color='green', linewidth=.5)
+ci.rolling(window=33,center=False).mean().plot(color='blue', linewidth=.5)
+
+stock['rsiToplimit'].plot(color='black', linewidth=.25)
+stock['rsiBotlimit'].plot(color='black', linewidth=.25)
 #hist_values = wv_data - my_data
 #stock['diffs'].rolling(window=7,center=False).mean().plot(kind='bar')
 #plt.bar(stock.reset_index()['Date'].values, (pd.Series(hist_values).rolling(window=7,center=False).mean()).values)

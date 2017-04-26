@@ -6,29 +6,15 @@ import matplotlib.pyplot as plt
 
 def rsi(close, window_length):
     delta = close.diff()[1:]
-
-    # Make the positive gains (up) and negative gains (down) Series
     up, down = delta.copy(), delta.copy()
     up[up < 0] = 0
     down[down > 0] = 0
-
-    # Calculate the EWMA
     roll_up1 = pd.stats.moments.ewma(up, window_length)
     roll_down1 = pd.stats.moments.ewma(down.abs(), window_length)
-
-    # Calculate the RSI based on EWMA
     RS1 = roll_up1 / roll_down1
     RSI1 = 100.0 - (100.0 / (1.0 + RS1))
 
-    # Calculate the SMA
-    roll_up2 = pd.rolling_mean(up, window_length)
-    roll_down2 = pd.rolling_mean(down.abs(), window_length)
-
-    # Calculate the RSI based on SMA
-    RS2 = roll_up2 / roll_down2
-    RSI2 = 100.0 - (100.0 / (1.0 + RS2))
-
-    return RSI2
+    return RSI1
 
 umbral = 0.0025
 start = datetime.datetime(2012, 1, 1)
@@ -90,17 +76,22 @@ stock['diffs'] = wv_data - my_data
 
 plt.subplot(311)
 stock['trends'].plot(color='black', linewidth=.75)
-stock['wv_trends'].plot(color='red', linewidth=.5)
+#stock['wv_trends'].plot(color='red', linewidth=.5)
 #plt.plot(stock['Date'].values, (pd.Series(wv_data).rolling(window=20,center=False).mean()).values, color='red')
 #plt.plot(stock['Date'].values, (pd.Series(wv_data).ewm(span=20).mean()).values, color='blue')
 
 plt.subplot(312)
-stock['Volume'].plot(linewidth=.75)
+#stock['Volume'].plot(linewidth=.75)
 stock['Volume'].rolling(window=7,center=False).mean().plot(color='green', linewidth=.5)
 stock['Volume'].rolling(window=20,center=False).mean().plot(color='red', linewidth=.5)
 
 plt.subplot(313)
+stock['rsi30limit'] = 30 * np.ones(len(stock['trends']))
+stock['rsi70limit'] = 70 * np.ones(len(stock['trends']))
 rsi(stock['trends'], 14).plot(color='green', linewidth=.5)
+rsi(stock['trends'], 3).rolling(window=12,center=False).mean().plot(color='red', linewidth=.5)
+stock['rsi30limit'].plot(color='black', linewidth=.25)
+stock['rsi70limit'].plot(color='black', linewidth=.25)
 #hist_values = wv_data - my_data
 #stock['diffs'].rolling(window=7,center=False).mean().plot(kind='bar')
 #plt.bar(stock.reset_index()['Date'].values, (pd.Series(hist_values).rolling(window=7,center=False).mean()).values)

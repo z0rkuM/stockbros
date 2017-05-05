@@ -39,12 +39,13 @@ def create_or_update_stock():
 	stocksSize = len(request.json)
 	
 	documentStocks = db.stocks
-	matchedCount = 0
-	modifiedCount = 0
+	#matchedCount = 0
+	#modifiedCount = 0
 	for stock in request.json:
 		#result = documentStocks.replace_one({"$and":[{"market": {'$eq':stock['market']}},{"stock": {'$eq':stock['stock']}}]}, stock, True)
 		#matchedCount = matchedCount + result.matched_count
 		#modifiedCount = modifiedCount + result.modified_count
 		result = documentStocks.find_and_modify(query={"$and":[{"market": stock['market']},{"stock": stock['stock']}]}, update=stock, new=True, upsert=True)
-
-	return make_response(jsonify({'stocks':[{ "stocks_inserted" : stocksSize - modifiedCount},{ "stocks_modified" : modifiedCount}]}), 200)
+	
+	#return make_response(jsonify({'stocks':[{ "stocks_inserted" : stocksSize - modifiedCount},{ "stocks_modified" : modifiedCount}]}), 200)
+	return make_response(jsonify({'stocks':[{ "result" : "ok"}]}), 200)

@@ -1,0 +1,1 @@
+SET DEBUG=stockbros-client:* & npm start

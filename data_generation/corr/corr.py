@@ -17,17 +17,30 @@ def get_key(key):
     return our_symbols.get(key)
 symbols = sorted(symbols, key=get_key)
 
-adj_close = data.DataReader(symbols, 'yahoo', start, end)['Adj Close']
+adj_close = data.DataReader(symbols, 'yahoo', start, end)['Close']
+adj_close = adj_close.ffill()
 rets = adj_close.pct_change()
 corr = rets.corr()
-
-plt.imshow(corr, cmap='hot', interpolation='none')
-plt.colorbar()
-
 cols = []
 for i in range(len(corr.columns)):
     cols.append(get_key(corr.columns[i]))
 
+plt.figure(1)
+plt.imshow(corr, cmap='hot', interpolation='none')
+plt.colorbar()
 plt.xticks(range(len(corr)), cols, rotation=45)
 plt.yticks(range(len(corr)), cols)
+
+plt.figure(2)
+plt.scatter(rets.mean(), rets.std())
+plt.xlabel('Beneficio')
+plt.ylabel('Variabilidad')
+for label, x, y in zip(cols, rets.mean(), rets.std()):
+    plt.annotate(
+        label, 
+        xy = (x, y), xytext = (20, -20),
+        textcoords = 'offset points', ha = 'right', va = 'bottom',
+        bbox = dict(boxstyle = 'round,pad=0.5', fc = 'yellow', alpha = 0.5),
+        arrowprops = dict(arrowstyle = '->', connectionstyle = 'arc3,rad=0'))
+
 plt.show()

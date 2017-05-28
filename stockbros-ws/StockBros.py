@@ -6,6 +6,7 @@ from Authentication.Authentication import *
 from datetime import datetime
 from dbWrapper import db
 from util import *
+from crossdomain import *
 
 
 #Create application object
@@ -27,6 +28,7 @@ def not_found(error):
 
 @app.route('/StockBros/auth', methods=['GET'])
 @auth.login_required
+@crossdomain(origin='*')
 def auth():
 	return make_response(jsonify({ "auth" : "ok"}), 200)
 

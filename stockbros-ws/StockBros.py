@@ -1,5 +1,5 @@
 #!flask/bin/python
-from flask import Flask, abort, jsonify, make_response
+from flask import Flask, abort, jsonify, make_response, request
 from Stocks.Stocks import *
 from Events.Events import *
 from Authentication.Authentication import *
@@ -11,7 +11,7 @@ from crossdomain import *
 
 #Create application object
 app = Flask(__name__)
-#app.config["DEBUG"] = True
+app.config["DEBUG"] = True
 app.register_blueprint(api_stocks, url_prefix="/StockBros")
 app.register_blueprint(api_events, url_prefix="/StockBros")
 
@@ -26,9 +26,8 @@ def not_found(error):
 def not_found(error):
 	return make_response(jsonify({'error': 'Bad request'}), 404)
 
-@app.route('/StockBros/auth', methods=['GET', 'OPTIONS'])
+@app.route('/StockBros/auth', methods=['GET'])
 @auth.login_required
-@crossdomain(origin='*')
 def auth():
 	return make_response(jsonify({ "auth" : "ok"}), 200)
 

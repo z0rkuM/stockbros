@@ -16,3 +16,10 @@ def get_pw(username):
 @auth.error_handler
 def unauthorized():
 	return make_response(jsonify({'error': 'Unauthorized access'}), 401)
+
+def authenticate(username, password):
+	documentUsers = db.users
+	authUser = documentUsers.find_one({"Username": username, "pw": password})
+	if(authUser!=None):
+		return authUser
+	return None

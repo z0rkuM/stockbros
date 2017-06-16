@@ -1,4 +1,4 @@
 -- con "--jsonArray" se indica que es un json pero solo en la raspberry, debe de ser porque es de 32 bits. En un ordenador con mongodb 64 bits con el "--jsonArray" falla.
-mongoimport --db StockBros --collection users --drop --file D:\git\stockbros\scripts_db\users.json --jsonArray
-mongoimport --db StockBros --collection events --drop --file D:\git\stockbros\scripts_db\events.json --jsonArray
-mongoimport --db StockBros --collection stocks --drop --file D:\git\stockbros\scripts_db\stocks.json --jsonArray
+mongoimport --db StockBros --collection users --drop --file D:\git\stockbros\stockbros-ws\scripts_db\users.json --jsonArray
+mongoimport --db StockBros --collection events --drop --file D:\git\stockbros\stockbros-ws\scripts_db\events.json --jsonArray
+mongoimport --db StockBros --collection stocks --drop --file D:\git\stockbros\stockbros-ws\scripts_db\stocks.json --jsonArray

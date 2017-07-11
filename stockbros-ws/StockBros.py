@@ -26,8 +26,9 @@ def not_found(error):
 def not_found(error):
 	return make_response(jsonify({'error': 'Bad request'}), 404)
 
-@app.route('/StockBros/auth', methods=['GET'])
+@app.route('/StockBros/auth', methods=['GET']) #, 'OPTIONS'
 @auth.login_required
+#@crossdomain(origin='*')
 def auth():
 	return make_response(jsonify({ "auth" : "ok"}), 200)
 

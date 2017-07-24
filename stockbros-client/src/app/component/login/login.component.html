@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="row" id="pwd-container">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <section class="login-form">
+        <form (ngSubmit)="onSubmit()" #loginForm="ngForm" role="login">
+          
+          <img src="../../../assets/images/company.png" class="img-responsive" alt="" />
+          
+          <input type="text" name="name" placeholder="User" 
+            required class="form-control input-lg" 
+            [(ngModel)]="model.name" #nm="ngModel"/>
+          <div [hidden]="nm.valid || nm.pristine"
+            class="alert alert-danger">
+            El nombre de usuario es obligatorio
+          </div>
+
+          <input type="password" name="password" placeholder="Password"
+            required class="form-control input-lg"
+            [(ngModel)]="model.password" #pwd="ngModel"/>
+          <div [hidden]="pwd.valid || pwd.pristine"
+            class="alert alert-danger">
+            La contraseña es obligatoria
+          </div>
+          
+          <button type="submit" name="go" class="btn btn-lg btn-primary btn-block"
+            [disabled]="!loginForm.form.valid">
+            Sign in
+          </button>
+          <!--<div>
+            <a href="#">Create account</a> or <a href="#">reset password</a>
+          </div>-->
+          
+        </form>
+        
+        <div class="form-links">
+          <a href="#">http://91.117.52.106/StockBros-client</a>
+        </div>
+      </section>  
+      </div>
+      <div class="col-md-4"></div>
+  </div>
+</div>
